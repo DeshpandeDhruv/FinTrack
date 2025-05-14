@@ -1,0 +1,198 @@
+.sidebar-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  color: var(--text-secondary);
+}
+
+.sidebar-header {
+  padding: 24px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  color: var(--primary-400);
+}
+
+.logo-small {
+  color: var(--primary-400);
+  width: 28px;
+  height: 28px;
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, var(--primary-400), var(--secondary-400));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: 16px 0;
+}
+
+.sidebar-nav ul,
+.sidebar-section ul,
+.sidebar-footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-nav li,
+.sidebar-section li,
+.sidebar-footer li {
+  margin-bottom: 4px;
+}
+
+.sidebar-nav a,
+.sidebar-section a,
+.sidebar-footer a,
+.logout-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 0 8px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.sidebar-nav a:hover,
+.sidebar-section a:hover,
+.sidebar-footer a:hover,
+.logout-button:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.sidebar-nav a.active,
+.sidebar-section a.active,
+.sidebar-footer a.active {
+  background-color: var(--primary-900);
+  color: var(--primary-400);
+}
+
+.sidebar-nav a.active svg,
+.sidebar-section a.active svg,
+.sidebar-footer a.active svg {
+  color: var(--primary-400);
+}
+
+.sidebar-divider {
+  height: 1px;
+  background-color: var(--border-light);
+  margin: 8px 16px;
+}
+
+.sidebar-section {
+  padding: 16px 0;
+}
+
+.sidebar-section-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  letter-spacing: 1px;
+  margin: 0 16px 8px;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px 0;
+  border-top: 1px solid var(--border-light);
+}
+
+.logout-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: left;
+  color: var(--text-secondary);
+}
+
+/* Collapsed state adjustments */
+.sidebar.collapsed .logo-text,
+.sidebar.collapsed .sidebar-section-title,
+.sidebar.collapsed .sidebar-nav span,
+.sidebar.collapsed .sidebar-section span,
+.sidebar.collapsed .sidebar-footer span {
+  display: none;
+}
+
+.sidebar.collapsed .sidebar-nav a,
+.sidebar.collapsed .sidebar-section a,
+.sidebar.collapsed .sidebar-footer a,
+.sidebar.collapsed .logout-button {
+  justify-content: center;
+  padding: 12px 0;
+}
+
+.sidebar.collapsed .sidebar-header {
+  padding: 20px 0;
+}
+
+/* Tooltip for collapsed sidebar */
+.sidebar.collapsed .sidebar-nav a,
+.sidebar.collapsed .sidebar-section a,
+.sidebar.collapsed .sidebar-footer a,
+.sidebar.collapsed .logout-button {
+  position: relative;
+}
+
+.sidebar.collapsed .sidebar-nav a::after,
+.sidebar.collapsed .sidebar-section a::after,
+.sidebar.collapsed .sidebar-footer a::after,
+.sidebar.collapsed .logout-button::after {
+  content: attr(aria-label);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 8px;
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.sidebar.collapsed .sidebar-nav a:hover::after,
+.sidebar.collapsed .sidebar-section a:hover::after,
+.sidebar.collapsed .sidebar-footer a:hover::after,
+.sidebar.collapsed .logout-button:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 768px) {
+  .sidebar-container {
+    padding-bottom: 80px; /* Extra space for mobile bottom navigation */
+  }
+}

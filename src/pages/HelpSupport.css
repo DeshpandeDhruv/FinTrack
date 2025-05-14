@@ -1,0 +1,156 @@
+.help-support-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.help-support-container h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.help-support-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.help-support-tab {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.help-support-tab:hover {
+  background-color: #e0e0e0;
+}
+
+.help-support-tab.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.help-support-content {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* FAQ Section */
+.faq-section {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+}
+
+.faq-item h3 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.faq-item p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Contact Section */
+.contact-section {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-info {
+  padding: 1rem;
+}
+
+.contact-info h3 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.contact-info p {
+  margin: 0.5rem 0;
+  color: #666;
+}
+
+/* Support Form Section */
+.support-form-section {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .help-support-container {
+    padding: 1rem;
+  }
+
+  .help-support-tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .help-support-tab {
+    width: 100%;
+  }
+
+  .help-support-content {
+    padding: 1rem;
+  }
+} 

@@ -1,0 +1,255 @@
+.inflation-chart-container {
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow: hidden;
+}
+
+.inflation-stats {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.inflation-main-stat {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background-color: var(--bg-tertiary);
+  border-radius: 8px;
+  border: 1px solid var(--border-medium);
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: var(--primary-900);
+  color: var(--primary-400);
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-content h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 4px 0;
+  color: var(--text-primary);
+}
+
+.stat-change {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.stat-change.positive {
+  color: var(--success-500);
+}
+
+.stat-change.negative {
+  color: var(--error-500);
+}
+
+.inflation-forecast-stat {
+  flex: 1;
+  min-width: 200px;
+  padding: 16px;
+  background-color: var(--bg-tertiary);
+  border-radius: 8px;
+  border: 1px solid var(--border-medium);
+}
+
+.inflation-forecast-stat h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.forecast-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 4px 0;
+  color: var(--text-primary);
+}
+
+.forecast-change {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.forecast-change.positive {
+  color: var(--success-500);
+}
+
+.forecast-change.negative {
+  color: var(--error-500);
+}
+
+.chart-title-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.chart-title-section h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.chart-legend {
+  display: flex;
+  gap: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.legend-color.historical {
+  background-color: var(--primary-500);
+}
+
+.legend-color.forecast {
+  background-color: var(--secondary-500);
+}
+
+.chart-container {
+  height: 220px;
+  width: 100%;
+  position: relative;
+  margin-top: 12px;
+}
+
+/* Simulated Chart Styles */
+.inflation-chart-visual {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  padding-bottom: 24px; /* Space for labels */
+}
+
+.chart-bar {
+  flex: 1;
+  margin: 0 4px;
+  position: relative;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+  border-radius: 4px 4px 0 0;
+}
+
+.chart-bar.historical {
+  background-color: var(--primary-500);
+}
+
+.chart-bar.forecast {
+  background-color: var(--secondary-500);
+}
+
+.bar-label {
+  position: absolute;
+  bottom: -24px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+}
+
+.bar-tooltip {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.chart-bar:hover .bar-tooltip {
+  opacity: 1;
+}
+
+.confidence-interval {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background-color: rgba(168, 85, 247, 0.3);
+  border-radius: 2px;
+}
+
+.trend-line {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-500), var(--secondary-500));
+  left: 0;
+  right: 0;
+  bottom: 40%;
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .inflation-stats {
+    flex-direction: column;
+  }
+  
+  .chart-title-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .chart-container {
+    height: 180px;
+  }
+}

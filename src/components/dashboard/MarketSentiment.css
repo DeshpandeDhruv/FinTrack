@@ -1,0 +1,194 @@
+.market-sentiment-container {
+  background-color: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sentiment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.sentiment-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.overall-sentiment {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.overall-sentiment.very-positive {
+  background-color: rgba(34, 197, 94, 0.2);
+  color: var(--success-400);
+}
+
+.overall-sentiment.positive {
+  background-color: rgba(34, 197, 94, 0.1);
+  color: var(--success-500);
+}
+
+.overall-sentiment.neutral {
+  background-color: rgba(100, 116, 139, 0.1);
+  color: var(--neutral-400);
+}
+
+.overall-sentiment.negative {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--error-500);
+}
+
+.overall-sentiment.very-negative {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: var(--error-400);
+}
+
+.sectors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sector-card {
+  background-color: var(--bg-tertiary);
+  border-radius: 8px;
+  padding: 12px;
+  border: 1px solid var(--border-medium);
+  transition: all 0.2s ease;
+}
+
+.sector-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: var(--border-light);
+}
+
+.sector-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.sector-header h4 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.sector-sentiment {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.sector-sentiment.very-positive,
+.sector-sentiment.positive {
+  color: var(--success-500);
+}
+
+.sector-sentiment.neutral {
+  color: var(--neutral-400);
+}
+
+.sector-sentiment.negative,
+.sector-sentiment.very-negative {
+  color: var(--error-500);
+}
+
+.sector-indicators {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.sentiment-bar-container {
+  width: 100%;
+  height: 6px;
+  background-color: var(--bg-primary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.sentiment-bar {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.sentiment-bar.very-positive,
+.sentiment-bar.positive {
+  background-color: var(--success-500);
+}
+
+.sentiment-bar.neutral {
+  background-color: var(--neutral-400);
+}
+
+.sentiment-bar.negative,
+.sentiment-bar.very-negative {
+  background-color: var(--error-500);
+}
+
+.sector-change {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.sector-change .positive {
+  color: var(--success-500);
+}
+
+.sector-change .negative {
+  color: var(--error-500);
+}
+
+.sector-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.keyword {
+  padding: 4px 8px;
+  background-color: var(--primary-900);
+  color: var(--primary-300);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .sentiment-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .sector-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
