@@ -1,8 +1,7 @@
 .auth-container {
   display: flex;
   min-height: 100vh;
-  width: 100%;
-  overflow: hidden;
+  background-color: var(--background-color);
 }
 
 .auth-background {
@@ -100,16 +99,6 @@
   max-width: 320px;
 }
 
-.auth-error {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: var(--error-500);
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 16px;
-  font-size: 0.9rem;
-  border-left: 3px solid var(--error-500);
-}
-
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -157,6 +146,16 @@
   outline: none;
   border-color: var(--primary-500);
   box-shadow: 0 0 0 2px var(--primary-900);
+}
+
+.auth-error {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--error-500);
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+  border-left: 3px solid var(--error-500);
 }
 
 .form-options {

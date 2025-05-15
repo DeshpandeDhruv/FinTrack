@@ -116,7 +116,7 @@ const Header: React.FC<HeaderProps> = ({ user, onLogout, currentPath }) => {
                 <User size={20} />
               </div>
             )}
-            <span className="user-name">{user?.name || 'User'}</span>
+            <span className="user-name">{user?.username || 'User'}</span>
           </button>
           
           {showUserMenu && (

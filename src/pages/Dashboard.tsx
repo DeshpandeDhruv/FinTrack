@@ -56,7 +56,7 @@ const Dashboard: React.FC = () => {
     <div className="dashboard-container">
       <div className="dashboard-header">
         <div className="greeting-section">
-          <h1>Welcome back, {user?.name || 'User'}</h1>
+          <h1>Welcome back, {user?.username || 'User'}</h1>
           <p>Here's your financial pulse for today</p>
         </div>
         <button 

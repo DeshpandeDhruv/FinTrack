@@ -5,30 +5,56 @@ import { useFinance } from '../context/FinanceContext';
 import './Auth.css';
 
 const Register: React.FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  
-  const { register } = useFinance();
   const navigate = useNavigate();
-  
+  const { register } = useFinance();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const validateForm = () => {
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return false;
+    }
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
-    
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
+
     try {
-      await register(name, email, password);
+      await register(formData.name, formData.email, formData.password);
       navigate('/');
     } catch (err) {
       setError('Registration failed. Please try again.');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
-  
+
   return (
     <div className="auth-container">
       <div className="auth-background">
@@ -56,9 +82,10 @@ const Register: React.FC = () => {
               <input
                 type="text"
                 id="name"
+                name="name"
                 placeholder="Enter your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={formData.name}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -71,9 +98,10 @@ const Register: React.FC = () => {
               <input
                 type="email"
                 id="email"
+                name="email"
                 placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -86,11 +114,28 @@ const Register: React.FC = () => {
               <input
                 type="password"
                 id="password"
+                name="password"
                 placeholder="Create a password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={handleChange}
                 required
                 minLength={6}
+              />
+            </div>
+          </div>
+          
+          <div className="form-group">
+            <label htmlFor="confirmPassword">Confirm Password</label>
+            <div className="input-with-icon">
+              <Lock size={18} className="input-icon" />
+              <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm your password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                required
               />
             </div>
           </div>
@@ -103,10 +148,9 @@ const Register: React.FC = () => {
           <button 
             type="submit" 
             className="auth-button"
-            disabled={loading}
+            disabled={isLoading}
           >
-            {loading ? 'Creating Account...' : 'Sign Up'}
-            {!loading && <ArrowRight size={18} />}
+            {isLoading ? 'Creating Account...' : 'Sign Up'}
           </button>
         </form>
         

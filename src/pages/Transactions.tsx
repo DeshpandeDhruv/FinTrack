@@ -109,9 +109,14 @@ const Transactions: React.FC = () => {
             className="filter-select"
           >
             <option value="all">All Categories</option>
-            {[...TRANSACTION_CATEGORIES.income, ...TRANSACTION_CATEGORIES.expense].map(category => (
-              <option key={category} value={category}>{category}</option>
-            ))}
+            {filter.type === 'all' 
+              ? [...new Set([...TRANSACTION_CATEGORIES.income, ...TRANSACTION_CATEGORIES.expense])].map(category => (
+                  <option key={category} value={category}>{category}</option>
+                ))
+              : TRANSACTION_CATEGORIES[filter.type as keyof typeof TRANSACTION_CATEGORIES].map(category => (
+                  <option key={category} value={category}>{category}</option>
+                ))
+            }
           </select>
         </div>
       </div>

@@ -1,10 +1,20 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { mockUserData, mockInflationData, mockMarketSentiment, mockRecommendations } from '../data/mockData';
+import axios from 'axios';
 
 type UserBehaviorType = 'Saver' | 'Risk-Taker' | 'Balanced' | 'Conservative' | 'Investor';
 
+interface User {
+  id: string;
+  username: string;
+  email: string;
+  password?: string;
+  risk_tolerance?: 'low' | 'medium' | 'high';
+  spending_habits?: 'low' | 'medium' | 'high';
+}
+
 interface FinanceContextType {
-  user: any;
+  user: User | null;
   isAuthenticated: boolean;
   inflationForecast: any;
   marketSentiment: any;
@@ -14,7 +24,7 @@ interface FinanceContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   register: (name: string, email: string, password: string) => Promise<void>;
-  updateUserProfile: (data: any) => Promise<void>;
+  updateUserProfile: (data: Partial<User>) => Promise<void>;
   markNotificationAsRead: (id: string) => void;
   refreshData: () => Promise<void>;
 }
@@ -30,7 +40,7 @@ export const useFinance = () => {
 };
 
 export const FinanceProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [inflationForecast, setInflationForecast] = useState<any>(mockInflationData);
   const [marketSentiment, setMarketSentiment] = useState<any>(mockMarketSentiment);
@@ -42,8 +52,15 @@ export const FinanceProvider: React.FC<{ children: ReactNode }> = ({ children })
   useEffect(() => {
     const storedUser = localStorage.getItem('fintrack_user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsAuthenticated(true);
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+        setIsAuthenticated(true);
+        determineUserBehaviorType(parsedUser);
+      } catch (error) {
+        console.error('Error parsing stored user data:', error);
+        localStorage.removeItem('fintrack_user');
+      }
     }
     
     // Load notifications
@@ -76,120 +93,159 @@ export const FinanceProvider: React.FC<{ children: ReactNode }> = ({ children })
     setNotifications(mockNotifications);
   }, []);
 
-  // Mock login function
+  const determineUserBehaviorType = (userData: User) => {
+    const risk_tolerance = userData.risk_tolerance || 'medium';
+    const spending_habits = userData.spending_habits || 'medium';
+    
+    let behaviorType: UserBehaviorType = 'Balanced';
+    
+    if (risk_tolerance === 'high' && spending_habits === 'low') {
+      behaviorType = 'Investor';
+    } else if (risk_tolerance === 'low' && spending_habits === 'low') {
+      behaviorType = 'Saver';
+    } else if (risk_tolerance === 'high' && spending_habits === 'high') {
+      behaviorType = 'Risk-Taker';
+    } else if (risk_tolerance === 'low' && spending_habits === 'high') {
+      behaviorType = 'Conservative';
+    }
+    
+    setUserBehaviorType(behaviorType);
+  };
+
   const login = async (email: string, password: string) => {
     try {
-      // In a real app, this would be an API call
-      return new Promise<void>((resolve) => {
-        setTimeout(() => {
-          const userData = mockUserData;
-          setUser(userData);
-          setIsAuthenticated(true);
-          localStorage.setItem('fintrack_user', JSON.stringify(userData));
-          resolve();
-        }, 1000);
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        email,
+        password
       });
+
+      if (response.data.user) {
+        const userData = response.data.user;
+        setUser(userData);
+        setIsAuthenticated(true);
+        determineUserBehaviorType(userData);
+        localStorage.setItem('fintrack_user', JSON.stringify(userData));
+      } else {
+        throw new Error('Invalid credentials');
+      }
     } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        throw new Error('Invalid email or password');
+      }
       throw new Error('Authentication failed');
     }
   };
 
-  // Mock logout function
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem('fintrack_user');
   };
 
-  // Mock register function
   const register = async (name: string, email: string, password: string) => {
     try {
-      // In a real app, this would be an API call
-      return new Promise<void>((resolve) => {
-        setTimeout(() => {
-          const userData = { ...mockUserData, name, email };
-          setUser(userData);
-          setIsAuthenticated(true);
-          localStorage.setItem('fintrack_user', JSON.stringify(userData));
-          resolve();
-        }, 1000);
+      const response = await axios.post('http://localhost:5000/api/auth/signup', {
+        username: name,
+        email,
+        password
       });
+
+      if (response.data.user) {
+        const userData = response.data.user;
+        setUser(userData);
+        setIsAuthenticated(true);
+        determineUserBehaviorType(userData);
+        localStorage.setItem('fintrack_user', JSON.stringify(userData));
+        localStorage.setItem('token', response.data.token);
+      } else {
+        throw new Error('Registration failed');
+      }
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 409) {
+          throw new Error('User already exists');
+        }
+        throw new Error(error.response?.data?.message || 'Registration failed');
+      }
       throw new Error('Registration failed');
     }
   };
 
-  // Mock update profile function
-  const updateUserProfile = async (data: any) => {
+  const updateUserProfile = async (data: Partial<User>) => {
     try {
-      // In a real app, this would be an API call
-      return new Promise<void>((resolve) => {
-        setTimeout(() => {
-          const updatedUser = { ...user, ...data };
-          setUser(updatedUser);
-          localStorage.setItem('fintrack_user', JSON.stringify(updatedUser));
-          
-          // Determine behavior type based on updated profile
-          const risk_tolerance = data.risk_tolerance || user.risk_tolerance;
-          const spending_habits = data.spending_habits || user.spending_habits;
-          
-          let behaviorType: UserBehaviorType = 'Balanced';
-          
-          if (risk_tolerance === 'high' && spending_habits === 'low') {
-            behaviorType = 'Investor';
-          } else if (risk_tolerance === 'low' && spending_habits === 'low') {
-            behaviorType = 'Saver';
-          } else if (risk_tolerance === 'high' && spending_habits === 'high') {
-            behaviorType = 'Risk-Taker';
-          } else if (risk_tolerance === 'low' && spending_habits === 'high') {
-            behaviorType = 'Conservative';
-          }
-          
-          setUserBehaviorType(behaviorType);
-          resolve();
-        }, 1000);
+      if (!user) {
+        throw new Error('No user logged in');
+      }
+
+      const response = await axios.put(`http://localhost:5000/api/users/${user.id}`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
       });
+
+      if (response.data.user) {
+        const updatedUser = response.data.user;
+        setUser(updatedUser);
+        determineUserBehaviorType(updatedUser);
+        localStorage.setItem('fintrack_user', JSON.stringify(updatedUser));
+      }
     } catch (error) {
       throw new Error('Profile update failed');
     }
   };
 
-  // Mark notification as read
   const markNotificationAsRead = (id: string) => {
     setNotifications(notifications.map(notification => 
       notification.id === id ? { ...notification, read: true } : notification
     ));
   };
 
-  // Refresh all data
   const refreshData = async () => {
     try {
-      // In a real app, these would be separate API calls
-      return new Promise<void>((resolve) => {
-        setTimeout(() => {
-          // Randomize the mock data slightly
-          const updatedInflation = {
-            ...mockInflationData,
-            data: mockInflationData.data.map(item => ({
-              ...item,
-              value: item.value * (0.95 + Math.random() * 0.1)
-            }))
-          };
-          
-          const updatedSentiment = {
-            ...mockMarketSentiment,
-            sectors: mockMarketSentiment.sectors.map(sector => ({
-              ...sector,
-              sentiment: sector.sentiment * (0.9 + Math.random() * 0.2)
-            }))
-          };
-          
-          setInflationForecast(updatedInflation);
-          setMarketSentiment(updatedSentiment);
-          resolve();
-        }, 1500);
-      });
+      // Fetch real inflation data
+      const inflationResponse = await axios.get('http://localhost:5000/api/inflation/forecast');
+      const forecastData = inflationResponse.data;
+      
+      // Transform the data to match the expected format
+      const transformedForecast = {
+        status: forecastData.status,
+        data: forecastData.data.map((item: any) => ({
+          date: item.date,
+          value: item.value
+        })),
+        forecast: forecastData.forecast.map((item: any) => ({
+          date: item.date,
+          value: item.value,
+          confidence: item.confidence
+        }))
+      };
+      
+      setInflationForecast(transformedForecast);
+
+      // Get current and predicted interest rates
+      const currentRate = forecastData.data[forecastData.data.length - 1]?.rate || 0;
+      const previousRate = forecastData.data[forecastData.data.length - 2]?.rate || 0;
+      const predictedRate = forecastData.forecast[0]?.rate || currentRate;
+      const rateChange = currentRate - previousRate;
+      
+      // Update market sentiment with real interest rate data
+      const updatedSentiment = {
+        ...mockMarketSentiment,
+        interestRate: {
+          current: currentRate,
+          predicted: predictedRate,
+          change: rateChange,
+          trend: rateChange > 0 ? 'up' : rateChange < 0 ? 'down' : 'neutral'
+        },
+        sectors: mockMarketSentiment.sectors.map(sector => ({
+          ...sector,
+          sentiment: sector.sentiment * (0.9 + Math.random() * 0.2)
+        }))
+      };
+      
+      setMarketSentiment(updatedSentiment);
     } catch (error) {
+      console.error('Error refreshing data:', error);
       throw new Error('Data refresh failed');
     }
   };
@@ -210,5 +266,9 @@ export const FinanceProvider: React.FC<{ children: ReactNode }> = ({ children })
     refreshData
   };
 
-  return <FinanceContext.Provider value={value}>{children}</FinanceContext.Provider>;
+  return (
+    <FinanceContext.Provider value={value}>
+      {children}
+    </FinanceContext.Provider>
+  );
 };

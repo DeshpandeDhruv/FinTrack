@@ -10,9 +10,9 @@ const Insights: React.FC = () => {
   const marketInsights = [
     {
       title: 'Inflation Forecast',
-      value: `${inflationForecast.forecast}%`,
-      change: inflationForecast.change,
-      trend: inflationForecast.change > 0 ? 'up' : 'down',
+      value: `${inflationForecast.forecast[0]?.value.toFixed(5)}%`,
+      change: inflationForecast.forecast[0]?.value - inflationForecast.data[inflationForecast.data.length - 1]?.value,
+      trend: inflationForecast.forecast[0]?.value > inflationForecast.data[inflationForecast.data.length - 1]?.value ? 'up' : 'down',
       description: 'Projected inflation rate for the next quarter'
     },
     {
@@ -24,10 +24,10 @@ const Insights: React.FC = () => {
     },
     {
       title: 'Interest Rates',
-      value: '4.25%',
-      change: 0.25,
-      trend: 'up',
-      description: 'Current federal interest rate'
+      value: `${marketSentiment.interestRate.current.toFixed(5)}%`,
+      change: marketSentiment.interestRate.change,
+      trend: marketSentiment.interestRate.trend,
+      description: `Current: ${marketSentiment.interestRate.current.toFixed(5)}% | Next: ${marketSentiment.interestRate.predicted?.toFixed(5)}%`
     }
   ];
 

@@ -5,29 +5,37 @@ import { useFinance } from '../context/FinanceContext';
 import './Auth.css';
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('demo@fintrack.com');
-  const [password, setPassword] = useState('password');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  
-  const { login } = useFinance();
   const navigate = useNavigate();
-  
+  const { login } = useFinance();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
-    
+    setIsLoading(true);
+
     try {
-      await login(email, password);
+      await login(formData.email, formData.password);
       navigate('/');
     } catch (err) {
       setError('Invalid email or password');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
-  
+
   return (
     <div className="auth-container">
       <div className="auth-background">
@@ -47,7 +55,7 @@ const Login: React.FC = () => {
         
         {error && <div className="auth-error">{error}</div>}
         
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <div className="input-with-icon">
@@ -55,10 +63,11 @@ const Login: React.FC = () => {
               <input
                 type="email"
                 id="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 required
+                placeholder="Enter your email"
               />
             </div>
           </div>
@@ -70,10 +79,11 @@ const Login: React.FC = () => {
               <input
                 type="password"
                 id="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 required
+                placeholder="Enter your password"
               />
             </div>
           </div>
@@ -89,10 +99,10 @@ const Login: React.FC = () => {
           <button 
             type="submit" 
             className="auth-button"
-            disabled={loading}
+            disabled={isLoading}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
-            {!loading && <ArrowRight size={18} />}
+            {isLoading ? 'Signing in...' : 'Sign In'}
+            {!isLoading && <ArrowRight size={18} />}
           </button>
         </form>
         

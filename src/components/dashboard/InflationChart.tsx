@@ -61,7 +61,7 @@ const InflationChart: React.FC<InflationChartProps> = ({ data, forecast }) => {
       // Add a value tooltip
       const tooltip = document.createElement('div');
       tooltip.className = 'bar-tooltip';
-      tooltip.innerText = `${item.value.toFixed(1)}%`;
+      tooltip.innerText = `${item.value.toFixed(5)}%`;
       
       bar.appendChild(tooltip);
       bar.appendChild(label);
@@ -100,7 +100,6 @@ const InflationChart: React.FC<InflationChartProps> = ({ data, forecast }) => {
         }, i * 100);
       });
     }, 100);
-    
   }, [data, forecast]);
   
   // Calculate current inflation and change
@@ -122,20 +121,20 @@ const InflationChart: React.FC<InflationChartProps> = ({ data, forecast }) => {
           </div>
           <div className="stat-content">
             <h3>Current Inflation</h3>
-            <div className="stat-value">{currentInflation.toFixed(1)}%</div>
+            <div className="stat-value">{currentInflation.toFixed(5)}%</div>
             <div className={`stat-change ${change >= 0 ? 'positive' : 'negative'}`}>
               {change >= 0 ? <ArrowUpRight size={16} /> : <ArrowDownRight size={16} />}
-              <span>{Math.abs(percentChange).toFixed(1)}% from last month</span>
+              <span>{Math.abs(percentChange).toFixed(5)}% from last month</span>
             </div>
           </div>
         </div>
         
         <div className="inflation-forecast-stat">
           <h4>Next Month Forecast</h4>
-          <div className="forecast-value">{nextMonthForecast.toFixed(1)}%</div>
+          <div className="forecast-value">{nextMonthForecast.toFixed(5)}%</div>
           <div className={`forecast-change ${forecastChange >= 0 ? 'positive' : 'negative'}`}>
             {forecastChange >= 0 ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
-            <span>{Math.abs(forecastChange).toFixed(1)}% change expected</span>
+            <span>{Math.abs(forecastChange).toFixed(5)}% change expected</span>
           </div>
         </div>
       </div>
