@@ -1,4 +1,6 @@
 import jwt from 'jsonwebtoken';
+// backend working fine 
+
 
 export const auth = async (req, res, next) => {
   try {
